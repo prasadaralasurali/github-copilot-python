@@ -65,6 +65,9 @@ function renderPuzzle(puz, sol) {
     }
   }
   resetTimer();
+  // clear inline check message when rendering a new puzzle
+  const checkMsg = document.getElementById('check-msg');
+  if (checkMsg) { checkMsg.textContent = ''; checkMsg.className = 'inline-msg'; }
 }
 
 function startTimer() {
@@ -102,6 +105,8 @@ async function newGame() {
   const data = await res.json();
   renderPuzzle(data.puzzle, data.solution);
   document.getElementById('message').innerText = '';
+  const checkMsg = document.getElementById('check-msg');
+  if (checkMsg) { checkMsg.textContent = ''; checkMsg.className = 'inline-msg'; }
   startTimer();
   loadTopTimes();
 }
@@ -130,6 +135,8 @@ async function checkSolution() {
   });
   const data = await res.json();
   const msg = document.getElementById('message');
+  const checkMsg = document.getElementById('check-msg');
+  if (checkMsg) { checkMsg.textContent = ''; checkMsg.className = 'inline-msg'; }
   if (data.error) {
     msg.className = 'error';
     msg.innerText = data.error;
@@ -155,9 +162,16 @@ async function checkSolution() {
       saveTopTime({name: name || 'Player', time: Date.now() - startTime, hints: hintsUsed, difficulty: document.getElementById('difficulty').value});
       loadTopTimes();
     }, 200);
+    // clear inline check message on success
+    const checkMsg = document.getElementById('check-msg');
+    if (checkMsg) { checkMsg.textContent = ''; checkMsg.className = 'inline-msg'; }
   } else {
     msg.className = 'error';
     msg.innerText = 'Some cells are incorrect.';
+    if (checkMsg) {
+      checkMsg.classList.add('error-inline');
+      checkMsg.textContent = 'Some cells are incorrect.';
+    }
   }
 }
 

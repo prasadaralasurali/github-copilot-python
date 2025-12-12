@@ -61,13 +61,13 @@ main{
 }
 
 .instructions{
-    background: var(--panel);
+    background: transparent;
     padding:12px 18px;
     border-radius:4px;
     max-width:760px;
     width:100%;
     box-sizing:border-box;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+    box-shadow: none;
     margin-bottom:8px;
 }
 
@@ -76,7 +76,7 @@ main{
 .board-panel{ display:flex; gap:24px; align-items:flex-start; justify-content:center; width:100% }
 .board-panel #sudoku-wrap{ display:flex; flex-direction:column; align-items:center }
 .side-controls{ display:flex; flex-direction:column; gap:18px; margin-left:18px }
-.side-card{ background:var(--panel); padding:12px 16px; border-radius:6px; display:flex; align-items:center; gap:14px; box-shadow:0 1px 0 rgba(0,0,0,0.03) }
+.side-card{ background: transparent; padding:12px 16px; border-radius:6px; display:flex; align-items:center; gap:14px; box-shadow:none }
 .side-card button{ min-width:92px }
 
 .timer-row{ margin-top:12px; text-align:center }
@@ -172,5 +172,8 @@ footer{ padding:12px; text-align:center; color:var(--muted) }
 #top-times-table{ border-collapse:collapse; width:640px; max-width:95% }
 #top-times-table th, #top-times-table td{ padding:8px 10px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.06) }
 #top-times-table thead th{ background:var(--panel); color:var(--muted) }
+
+.inline-msg{ margin-left:12px; font-size:14px; color:var(--muted) }
+.inline-msg.error-inline{ color: #d32f2f; font-weight:600 }
 
 #bottom-times h2{ background:#efefef; padding:8px 18px; border-radius:6px; color:#666; margin:0 }
