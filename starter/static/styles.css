@@ -4,7 +4,9 @@
     --accent: #1976d2;
     --muted: #666;
     --cell-bg: #fafafa;
+    --cell-text: #222;
     --prefilled-bg: #e0e0e0;
+    --prefilled-text: #111;
     --invalid: #ff8a80;
 }
 body[data-theme='dark']{
@@ -12,8 +14,10 @@ body[data-theme='dark']{
     --panel: #1e1e1e;
     --accent: #90caf9;
     --muted: #ddd;
-    --cell-bg: #212121;
-    --prefilled-bg: #2b2b2b;
+    --cell-bg: #151515;
+    --cell-text: #e8e8e8;
+    --prefilled-bg: #1f1f1f;
+    --prefilled-text: #ffffff;
 }
 
 body {
@@ -26,13 +30,14 @@ body {
 
 .top {
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:center;
     padding:12px 20px;
+    position:relative;
 }
-.top h1{ margin:0; color:var(--muted); }
-.top-controls{ display:flex; gap:12px; align-items:center }
-.timer{ font-weight:700; font-size:18px; color:var(--muted); }
+.top h1{ margin:0; color:var(--muted); font-size:28px }
+.top-right{ position:absolute; right:12px; top:12px }
+.timer{ font-weight:700; font-size:18px; color:var(--muted); margin-top:8px }
 
 main{
     display:flex;
@@ -61,17 +66,16 @@ main{
     border:1px solid #9e9e9e;
     text-align:center; font-size:18px;
     background:var(--cell-bg);
-    color:var(--muted);
+    color:var(--cell-text);
     outline:none; transition:background .15s, box-shadow .12s;
 }
-.block-even{ background: rgba(255,255,255,0.02); }
-.block-odd{ background: rgba(0,0,0,0.02); }
 
-/* Make sure the alternating block colors don't shift layout: apply to cells and preserve sizes */
-.sudoku-row .block-even, .sudoku-row .block-odd{ box-sizing:border-box }
+/* Make sure the block color classes don't shift layout: apply to cells and preserve sizes */
+.sudoku-row .block-0, .sudoku-row .block-1, .sudoku-row .block-2, .sudoku-row .block-3, .sudoku-row .block-4,
+.sudoku-row .block-5, .sudoku-row .block-6, .sudoku-row .block-7, .sudoku-row .block-8 { box-sizing:border-box }
 
 .sudoku-cell:focus{ box-shadow:0 0 0 3px rgba(25,118,210,0.12) }
-.sudoku-cell.prefilled{ background:var(--prefilled-bg); font-weight:700; color:var(--muted) }
+.sudoku-cell.prefilled{ background:var(--prefilled-bg); font-weight:700; color:var(--prefilled-text) }
 .sudoku-cell.invalid{ box-shadow: inset 0 0 0 2px var(--invalid); background: #fff2f2 }
 .sudoku-cell.incorrect{ background: #ffcdd2 }
 .sudoku-cell.hint{ font-weight:700 }
@@ -83,10 +87,45 @@ main{
 .sudoku-row:nth-child(6) > .sudoku-cell{ border-bottom:3px solid var(--accent) }
 
 .panel{ display:flex; flex-direction:column; gap:10px }
+/* control rows and inline hint label */
+.controls-row{ display:flex; gap:12px; align-items:center; justify-content:center; margin:8px 0 }
+.controls-row.center{ justify-content:center }
+.hints-inline{ margin-left:8px; font-weight:600 }
+
 .controls{ display:flex; gap:8px; align-items:center }
 select, button{ padding:8px 12px; border-radius:6px; border:0; cursor:pointer }
 button{ background:var(--accent); color:#fff }
 button:hover{ filter:brightness(.95) }
+
+/* Toggle switch */
+.switch{ position:relative; display:inline-block; width:46px; height:26px }
+.switch input{ opacity:0; width:0; height:0 }
+.slider{ position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#ccc; transition:.3s; border-radius:26px }
+.slider:before{ position:absolute; content:""; height:20px; width:20px; left:3px; bottom:3px; background:white; transition:.3s; border-radius:50% }
+.switch input:checked + .slider{ background:var(--accent) }
+.switch input:checked + .slider:before{ transform:translateX(20px) }
+
+/* distinct 3x3 block colors (subtle) */
+.block-0{ background: rgba(255,235,238,0.03) }
+.block-1{ background: rgba(232,245,233,0.03) }
+.block-2{ background: rgba(232,234,246,0.03) }
+.block-3{ background: rgba(255,249,196,0.03) }
+.block-4{ background: rgba(224,242,241,0.03) }
+.block-5{ background: rgba(248,237,233,0.03) }
+.block-6{ background: rgba(243,229,245,0.03) }
+.block-7{ background: rgba(227,242,253,0.03) }
+.block-8{ background: rgba(240,244,195,0.03) }
+
+/* Dark-mode variants for block backgrounds (increase opacity) */
+body[data-theme='dark'] .block-0{ background: rgba(255,235,238,0.06) }
+body[data-theme='dark'] .block-1{ background: rgba(232,245,233,0.06) }
+body[data-theme='dark'] .block-2{ background: rgba(232,234,246,0.06) }
+body[data-theme='dark'] .block-3{ background: rgba(255,249,196,0.06) }
+body[data-theme='dark'] .block-4{ background: rgba(224,242,241,0.06) }
+body[data-theme='dark'] .block-5{ background: rgba(248,237,233,0.06) }
+body[data-theme='dark'] .block-6{ background: rgba(243,229,245,0.06) }
+body[data-theme='dark'] .block-7{ background: rgba(227,242,253,0.06) }
+body[data-theme='dark'] .block-8{ background: rgba(240,244,195,0.06) }
 
 .status{ font-size:14px; color:var(--muted) }
 #message{ margin-top:6px }

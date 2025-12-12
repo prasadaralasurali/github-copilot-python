@@ -24,7 +24,7 @@ function createBoardElement() {
       // block index 0..8 used for alternating block backgrounds
       const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
       input.dataset.block = blockIndex;
-      input.classList.add((blockIndex % 2) === 0 ? 'block-even' : 'block-odd');
+      input.classList.add('block-' + blockIndex);
       input.setAttribute('aria-label', `Row ${i+1} Column ${j+1}`);
       rowDiv.appendChild(input);
     }
@@ -320,15 +320,12 @@ function saveTopTime(entry) {
   localStorage.setItem('sudoku_top_times', JSON.stringify(arr));
 }
 
-function toggleTheme() {
+function setTheme(isDark) {
   const body = document.body;
-  const btn = document.getElementById('theme-toggle');
-  if (body.dataset.theme === 'dark') {
-    body.dataset.theme = 'light';
-    btn.setAttribute('aria-pressed','false');
-  } else {
+  if (isDark) {
     body.dataset.theme = 'dark';
-    btn.setAttribute('aria-pressed','true');
+  } else {
+    body.dataset.theme = 'light';
   }
 }
 
@@ -336,7 +333,11 @@ window.addEventListener('load', () => {
   document.getElementById('new-game').addEventListener('click', newGame);
   document.getElementById('check-solution').addEventListener('click', checkSolution);
   document.getElementById('hint-btn').addEventListener('click', useHint);
-  document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+  const themeToggle = document.getElementById('theme-toggle');
+  // initialize theme
+  if (!document.body.dataset.theme) document.body.dataset.theme = 'light';
+  themeToggle.checked = document.body.dataset.theme === 'dark';
+  themeToggle.addEventListener('change', (e) => setTheme(e.target.checked));
   // event delegation for inputs
   document.getElementById('sudoku-board').addEventListener('input', validateImmediate);
   // initialize

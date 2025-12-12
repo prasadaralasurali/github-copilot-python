@@ -9,10 +9,11 @@
 <body>
   <header class="top">
     <h1>Sudoku</h1>
-    <div class="top-controls">
-      <div class="top-right">
-        <button id="theme-toggle" aria-pressed="false">Toggle Dark</button>
-      </div>
+    <div class="top-right">
+      <label class="switch">
+        <input id="theme-toggle" type="checkbox" aria-label="Toggle dark mode">
+        <span class="slider"></span>
+      </label>
     </div>
   </header>
 
@@ -26,6 +27,16 @@
         </ul>
       </div>
 
+      <div class="controls-row center">
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button id="new-game">New Game</button>
+      </div>
+
       <div id="sudoku-wrap">
         <div id="sudoku-board" aria-label="Sudoku board"></div>
         <div class="timer-row">
@@ -33,29 +44,18 @@
         </div>
       </div>
 
-      <div class="panel">
-        <div class="controls-row">
-          <label for="difficulty">Difficulty:</label>
-          <select id="difficulty">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-          <button id="new-game">New Game</button>
-        </div>
-
-        <div class="controls-row">
+      <div class="controls-row center">
+        <div>
           <button id="hint-btn">Hint</button>
-          <div>Hints used: <span id="hints-used">0</span></div>
+          <span class="hints-inline">Hints used: <span id="hints-used">0</span></span>
         </div>
-
-        <div class="controls-row">
+        <div>
           <button id="check-solution">Check Puzzle</button>
         </div>
+      </div>
 
-        <div class="status">
-          <div id="message" role="status" aria-live="polite"></div>
-        </div>
+      <div class="status">
+        <div id="message" role="status" aria-live="polite"></div>
       </div>
     </section>
 
