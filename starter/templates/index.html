@@ -10,16 +10,31 @@
   <header class="top">
     <h1>Sudoku</h1>
     <div class="top-controls">
-      <div class="timer" id="timer">00:00</div>
-      <button id="theme-toggle" aria-pressed="false">Toggle Dark</button>
+      <div class="top-right">
+        <button id="theme-toggle" aria-pressed="false">Toggle Dark</button>
+      </div>
     </div>
   </header>
 
   <main>
     <section id="board-area">
-      <div id="sudoku-board" aria-label="Sudoku board"></div>
+      <div class="instructions" aria-hidden="false">
+        <ul>
+          <li>🧩 Enter numbers 1–9 into empty cells.</li>
+          <li>✅ Invalid or duplicate entries in a row/column/block highlight in red.</li>
+          <li>💡 Use <strong>Hint</strong> to reveal a correct cell (uses hints).</li>
+        </ul>
+      </div>
+
+      <div id="sudoku-wrap">
+        <div id="sudoku-board" aria-label="Sudoku board"></div>
+        <div class="timer-row">
+          <strong>Timer:</strong> <span id="timer">00:00</span>
+        </div>
+      </div>
+
       <div class="panel">
-        <div class="controls">
+        <div class="controls-row">
           <label for="difficulty">Difficulty:</label>
           <select id="difficulty">
             <option value="easy">Easy</option>
@@ -27,26 +42,32 @@
             <option value="hard">Hard</option>
           </select>
           <button id="new-game">New Game</button>
+        </div>
+
+        <div class="controls-row">
           <button id="hint-btn">Hint</button>
+          <div>Hints used: <span id="hints-used">0</span></div>
+        </div>
+
+        <div class="controls-row">
           <button id="check-solution">Check Puzzle</button>
         </div>
+
         <div class="status">
-          <div>Hints used: <span id="hints-used">0</span></div>
           <div id="message" role="status" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
-    <aside id="sidebar">
-      <section class="top-times">
-        <h2>Top 10 Times</h2>
-        <ol id="top-times-list"></ol>
-      </section>
-      <section class="help">
-        <h3>Instructions</h3>
-        <p>Enter numbers 1–9. Invalid entries highlight in red. Use hints if stuck.</p>
-      </section>
-    </aside>
+    <section id="bottom-times">
+      <h2>Top 10 Fastest Times</h2>
+      <table id="top-times-table" aria-label="Top 10 times">
+        <thead>
+          <tr><th>Rank</th><th>Name</th><th>Time</th><th>Level</th><th>Hints</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
   </main>
 
   <footer>

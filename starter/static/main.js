@@ -21,7 +21,10 @@ function createBoardElement() {
       input.className = 'sudoku-cell';
       input.dataset.row = i;
       input.dataset.col = j;
-      input.dataset.block = Math.floor(i/3)*3 + Math.floor(j/3);
+      // block index 0..8 used for alternating block backgrounds
+      const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
+      input.dataset.block = blockIndex;
+      input.classList.add((blockIndex % 2) === 0 ? 'block-even' : 'block-odd');
       input.setAttribute('aria-label', `Row ${i+1} Column ${j+1}`);
       rowDiv.appendChild(input);
     }
@@ -226,6 +229,60 @@ function validateImmediate(e) {
       }
     }
   }
+  // After validation, check for completion
+  checkAutoComplete();
+}
+
+function boardsEqual(a, b) {
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE; j++) {
+      if ((a[i][j] || 0) !== (b[i][j] || 0)) return false;
+    }
+  }
+  return true;
+}
+
+function checkAutoComplete() {
+  // If any cell empty or invalid, don't auto-check
+  const inputs = document.getElementById('sudoku-board').getElementsByTagName('input');
+  for (let i = 0; i < inputs.length; i++) {
+    if (!inputs[i].value) return;
+    if (inputs[i].classList.contains('invalid')) return;
+  }
+  // All filled and no immediate invalids — compare with solution client-side
+  const current = getBoardValues();
+  if (solution && solution.length) {
+    if (boardsEqual(current, solution)) {
+      handleCompletion();
+    } else {
+      // If filled but incorrect, highlight mismatches
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const idx = r * SIZE + c;
+          const inputsArr = document.getElementById('sudoku-board').getElementsByTagName('input');
+          if (inputsArr[idx].disabled) continue;
+          if ((current[r][c] || 0) !== (solution[r][c] || 0)) inputsArr[idx].classList.add('incorrect');
+        }
+      }
+    }
+  }
+}
+
+function handleCompletion() {
+  stopTimer();
+  const timeMs = Date.now() - startTime;
+  const timeText = formatTime(timeMs);
+  const msg = document.getElementById('message');
+  msg.className = 'success';
+  msg.innerText = `Congratulations! Time: ${timeText} — Hints used: ${hintsUsed}`;
+  // Ask for name and save to Top 10
+  setTimeout(() => {
+    const name = prompt(`Well done! Enter your name to save Top 10 (Time: ${timeText})`, 'Player');
+    if (name !== null) {
+      saveTopTime({name: name || 'Player', time: timeMs, hints: hintsUsed, difficulty: document.getElementById('difficulty').value});
+      loadTopTimes();
+    }
+  }, 200);
 }
 
 function loadTopTimes() {
@@ -234,12 +291,22 @@ function loadTopTimes() {
   try { arr = JSON.parse(raw); } catch(e) { arr = []; }
   arr.sort((a,b) => a.time - b.time);
   arr = arr.slice(0,10);
-  const ol = document.getElementById('top-times-list');
-  ol.innerHTML = '';
-  arr.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} — ${formatTime(item.time)} — Hints: ${item.hints} — ${item.difficulty}`;
-    ol.appendChild(li);
+  const tbody = document.querySelector('#top-times-table tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  arr.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    const rank = document.createElement('td'); rank.textContent = (idx+1).toString();
+    const name = document.createElement('td'); name.textContent = item.name;
+    const time = document.createElement('td'); time.textContent = formatTime(item.time);
+    const level = document.createElement('td'); level.textContent = item.difficulty || '';
+    const hints = document.createElement('td'); hints.textContent = item.hints;
+    tr.appendChild(rank);
+    tr.appendChild(name);
+    tr.appendChild(time);
+    tr.appendChild(level);
+    tr.appendChild(hints);
+    tbody.appendChild(tr);
   });
 }
 
