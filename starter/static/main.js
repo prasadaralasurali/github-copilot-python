@@ -25,8 +25,8 @@ function createBoardElement() {
       const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
       input.dataset.block = blockIndex;
       input.classList.add('block-' + blockIndex);
-      // Highlight exactly blocks 1,3,5,7 (top-middle, mid-left, mid-right, bottom-middle)
-      if ([1,3,5,7].includes(blockIndex)) {
+      // Highlight exactly grids 1,3,5,7,9 (1-based). Those correspond to indices 0,2,4,6,8.
+      if ([0,2,4,6,8].includes(blockIndex)) {
         input.classList.add('block-high');
       } else {
         input.classList.add('block-clear');
