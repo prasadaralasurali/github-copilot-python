@@ -25,6 +25,14 @@ function createBoardElement() {
       const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
       input.dataset.block = blockIndex;
       input.classList.add('block-' + blockIndex);
+      // Apply cross-style shading matching design: shade blocks in central row or column
+      const blockRow = Math.floor(i/3);
+      const blockCol = Math.floor(j/3);
+      if (blockRow === 1 || blockCol === 1) {
+        input.classList.add('block-cross');
+      } else {
+        input.classList.add('block-clear');
+      }
       input.setAttribute('aria-label', `Row ${i+1} Column ${j+1}`);
       rowDiv.appendChild(input);
     }

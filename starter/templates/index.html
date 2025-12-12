@@ -10,6 +10,7 @@
   <header class="top">
     <h1>Sudoku</h1>
     <div class="top-right">
+      <span class="toggle-label">Use Dark Mode</span>
       <label class="switch">
         <input id="theme-toggle" type="checkbox" aria-label="Toggle dark mode">
         <span class="slider"></span>
@@ -27,7 +28,7 @@
         </ul>
       </div>
 
-      <div class="controls-row center">
+      <div class="controls-row center top-controls-row">
         <label for="difficulty">Difficulty:</label>
         <select id="difficulty">
           <option value="easy">Easy</option>
@@ -37,21 +38,23 @@
         <button id="new-game">New Game</button>
       </div>
 
-      <div id="sudoku-wrap">
-        <div id="sudoku-board" aria-label="Sudoku board"></div>
-        <div class="timer-row">
-          <strong>Timer:</strong> <span id="timer">00:00</span>
+      <div class="board-panel">
+        <div id="sudoku-wrap">
+          <div id="sudoku-board" aria-label="Sudoku board"></div>
+          <div class="timer-row">
+            <strong>Timer:</strong> <span id="timer">00:00</span>
+          </div>
         </div>
-      </div>
 
-      <div class="controls-row center">
-        <div>
-          <button id="hint-btn">Hint</button>
-          <span class="hints-inline">Hints used: <span id="hints-used">0</span></span>
-        </div>
-        <div>
-          <button id="check-solution">Check Puzzle</button>
-        </div>
+        <aside class="side-controls">
+          <div class="side-card">
+            <button id="hint-btn">Hint</button>
+            <span class="hints-inline">Hints used: <span id="hints-used">0</span></span>
+          </div>
+          <div class="side-card">
+            <button id="check-solution">Check Puzzle</button>
+          </div>
+        </aside>
       </div>
 
       <div class="status">
