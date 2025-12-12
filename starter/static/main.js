@@ -25,8 +25,9 @@ function createBoardElement() {
       const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
       input.dataset.block = blockIndex;
       input.classList.add('block-' + blockIndex);
-      // Highlight exactly grids 1,3,5,7,9 (1-based). Those correspond to indices 0,2,4,6,8.
-      if ([0,2,4,6,8].includes(blockIndex)) {
+      // Highlight the 3x3 sub-grids to match the attached design image: top-middle, mid-left, mid-right, bottom-middle
+      // These correspond to block indices 1,3,5,7 (0-based).
+      if ([1,3,5,7].includes(blockIndex)) {
         input.classList.add('block-high');
       } else {
         input.classList.add('block-clear');
@@ -49,7 +50,8 @@ function renderPuzzle(puz, sol) {
       const idx = i * SIZE + j;
       const val = puzzle[i][j];
       const inp = inputs[idx];
-      inp.className = 'sudoku-cell';
+      // preserve existing block-* classes; remove transient state classes
+      inp.classList.remove('invalid', 'incorrect', 'hint');
       inp.style.background = '';
       if (val !== 0) {
         inp.value = val;

@@ -101,7 +101,7 @@ main{
 .sudoku-row .block-5, .sudoku-row .block-6, .sudoku-row .block-7, .sudoku-row .block-8 { box-sizing:border-box }
 
 .sudoku-cell:focus{ box-shadow:0 0 0 3px rgba(25,118,210,0.12) }
-.sudoku-cell.prefilled{ background:var(--prefilled-bg); font-weight:700; color:var(--prefilled-text) }
+.sudoku-cell.prefilled{ font-weight:700; color:var(--prefilled-text) }
 .sudoku-cell.invalid{ box-shadow: inset 0 0 0 2px var(--invalid); background: #fff2f2 }
 .sudoku-cell.incorrect{ background: #ffcdd2 }
 .sudoku-cell.hint{ font-weight:700 }
