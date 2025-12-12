@@ -25,11 +25,9 @@ function createBoardElement() {
       const blockIndex = Math.floor(i/3)*3 + Math.floor(j/3);
       input.dataset.block = blockIndex;
       input.classList.add('block-' + blockIndex);
-      // Apply cross-style shading matching design: shade blocks in central row or column
-      const blockRow = Math.floor(i/3);
-      const blockCol = Math.floor(j/3);
-      if (blockRow === 1 || blockCol === 1) {
-        input.classList.add('block-cross');
+      // Highlight exactly blocks 1,3,5,7 (top-middle, mid-left, mid-right, bottom-middle)
+      if ([1,3,5,7].includes(blockIndex)) {
+        input.classList.add('block-high');
       } else {
         input.classList.add('block-clear');
       }
