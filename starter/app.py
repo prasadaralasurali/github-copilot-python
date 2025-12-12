@@ -1,3 +1,14 @@
+"""Flask application providing Sudoku endpoints used by the UI tests.
+
+Routes:
+- ``/``: renders the `index.html` template.
+- ``/new``: generates a new puzzle (accepts ``difficulty`` or ``clues``).
+- ``/check``: POST endpoint to compare a submitted board with current solution.
+
+This module keeps a simple in-memory ``CURRENT`` store which is fine for
+tests and local development.
+"""
+
 from flask import Flask, render_template, jsonify, request
 import sudoku_logic
 
@@ -9,12 +20,25 @@ CURRENT = {
     'solution': None
 }
 
+
 @app.route('/')
 def index():
+    """Render the main game HTML page."""
     return render_template('index.html')
+
 
 @app.route('/new')
 def new_game():
+    """Create a new Sudoku puzzle and store it in ``CURRENT``.
+
+    Supports two query parameters:
+    - ``difficulty``: one of ``easy``, ``medium`` (default), or ``hard``.
+    - ``clues``: an integer specifying how many clues to leave.
+
+    The endpoint returns JSON with both ``puzzle`` and ``solution``. The
+    solution is returned to make it convenient for the browser to offer
+    hints and local validation.
+    """
     # Accept either numeric 'clues' or a difficulty string: easy/medium/hard
     diff = request.args.get('difficulty')
     if diff:
@@ -36,8 +60,14 @@ def new_game():
     # Return solution too so client can offer hints and local checking
     return jsonify({'puzzle': puzzle, 'solution': solution})
 
+
 @app.route('/check', methods=['POST'])
 def check_solution():
+    """Compare a submitted board against the stored solution.
+
+    Expects JSON body with a ``board`` key set to a 9x9 nested list. Returns
+    a JSON object listing coordinates for any incorrect cells.
+    """
     data = request.json
     board = data.get('board')
     solution = CURRENT.get('solution')
@@ -49,6 +79,7 @@ def check_solution():
             if board[i][j] != solution[i][j]:
                 incorrect.append([i, j])
     return jsonify({'incorrect': incorrect})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
